@@ -53,15 +53,19 @@ adduser www-data $USER
 # Konfiguration für apache schreiben
 cat www.example.com | sed "s/HOSTNAME/$DOMAIN/g" | sed "s/USER/$USER/g" | sed "s/GROUP/$USER/g" > /etc/apache2/sites-available/$DOMAIN
 
+# PHP konfigurieren
+sed -i "s/HOSTNAME/$DOMAIN/g" $USER:$USER $HOME_DIR/php-fcgi/php-fcgi-starter
+
 # logrotate Konfiguration schreiben
 cat logrotate_template | sed "s/HOSTNAME/$DOMAIN/g" >> /etc/logrotate.d/vhosts
 
 # Berechtigungen festlegen
-echo "chmod 750 $HOME_DIR"
-echo "chown $USER:$USER $HOME_DIR/*"
-echo "chmod 750 $HOME_DIR/*"
-echo "chmod 550 $HOME_DIR/conf"
-echo "chown $USER:$USER $HOME_DIR/conf/php.ini"
-echo "chmod 440 $HOME_DIR/conf/php.ini"
-echo "chown $USER:$USER $HOME_DIR/php-fcgi/php-fcgi-starter"
-echo "chmod 750 $HOME_DIR/php-fcgi/php-fcgi-starter"
+chmod 750 $HOME_DIR
+chown $USER:$USER $HOME_DIR/*
+chmod 750 $HOME_DIR/*
+chmod 550 $HOME_DIR/conf
+chown $USER:$USER $HOME_DIR/conf/php.ini
+chmod 440 $HOME_DIR/conf/php.ini
+chown $USER:$USER $HOME_DIR/php-fcgi/php-fcgi-starter
+chmod 750 $HOME_DIR/php-fcgi/php-fcgi-starter
+
