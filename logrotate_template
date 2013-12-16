@@ -1,0 +1,18 @@
+/var/www/HOSTNAME/log/*.log {
+    daily
+    missingok
+    rotate 30
+    compress
+    delaycompress
+    notifempty
+    create 0640 root adm
+    sharedscripts
+    postrotate
+        /etc/init.d/apache2 reload > /dev/null
+    endscript
+    prerotate
+        if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
+            run-parts /etc/logrotate.d/httpd-prerotate; \
+        fi; \
+    endscript
+}
