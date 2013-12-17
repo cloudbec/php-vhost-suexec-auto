@@ -1,5 +1,4 @@
-#!/bin/bash
-DOMAIN=
+
 USER=
 
 usage()
@@ -55,7 +54,7 @@ cat www.example.com | sed "s/HOSTNAME/$DOMAIN/g" | sed "s/USER/$USER/g" | sed "s
 
 # PHP konfigurieren
 sed -i "s/HOSTNAME/$DOMAIN/g" $HOME_DIR/php-fcgi/php-fcgi-starter
-sed -i "s/HOME_DIR/$HOME_DIR\/tmp/g" $HOME_DIR/conf/php.ini
+sed -i "s%HOME_DIR%$HOME_DIR/tmp%g" $HOME_DIR/conf/php.ini
 
 # logrotate Konfiguration schreiben
 cat logrotate_template | sed "s/HOSTNAME/$DOMAIN/g" >> /etc/logrotate.d/vhosts
