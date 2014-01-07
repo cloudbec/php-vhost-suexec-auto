@@ -1,6 +1,6 @@
-
+#!/bin/bash
 USER=
-
+DOMAIN=
 usage()
 {
     cat <<EOF
