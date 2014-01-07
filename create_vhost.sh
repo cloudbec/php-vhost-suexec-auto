@@ -15,7 +15,7 @@ usage()
 EOF
 }
 # : bedeutet immer das ein parameter verlangt wird
-while getopts “hp:u:d:” OPTION
+while getopts "hp:u:d:" OPTION
 do
     case $OPTION in
         h)
