@@ -17,7 +17,7 @@
     </Directory>
     # Berechtigung fuer das Document root
     <Directory "/var/www/HOSTNAME/htdocs">
-        Options Indexes MultiViews FollowSymLinks +ExecCGI
+        Options -Indexes MultiViews FollowSymLinks +ExecCGI
         # PHP Konfiguration
         # jede PHP Datei wird vom fcgi handler verarbeitet
         AddHandler fcgid-script .php
