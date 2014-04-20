@@ -7,10 +7,11 @@
   <IfModule mod_fcgid.c>
 	SuexecUserGroup USER USER
     <Directory /srv/www/HOSTNAME/public_html/>
-      Options +ExecCGI
+      Options +ExecCGI +SymlinksIfOwnerMatch +Includes
       AllowOverride All
       AddHandler fcgid-script .php
       FCGIWrapper /srv/www/HOSTNAME/php-fcgi-scripts/php-fcgi-starter .php
+	DirectoryIndex index.html index.php	
       Order allow,deny
       Allow from all
     </Directory>
