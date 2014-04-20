@@ -1,7 +1,6 @@
 #!/bin/sh
-export PHPRC=/var/www/HOSTNAME/conf/
-export TMPDIR=/var/www/HOSTNAME/tmp
-export PHP_FCGI_MAX_REQUESTS=1000
-# ausgeschaltet nach doku http://httpd.apache.org/mod_fcgid/mod/mod_fcgid.html
-export PHP_FCGI_CHILDREN=0
-exec /usr/bin/php5-cgi
+export PHPRC=/srv/www/HOSTNAME/conf/
+export PHPRC
+export PHP_FCGI_MAX_REQUESTS=5000
+export PHP_FCGI_CHILDREN=8
+exec /usr/bin/php-cgi

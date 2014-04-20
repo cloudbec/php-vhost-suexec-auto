@@ -14,7 +14,7 @@ usage()
     -d      the domain name 
 EOF
 }
-# : bedeutet immer das ein parameter verlangt wird
+# all the information 
 while getopts "hp:u:d:" OPTION
 do
     case $OPTION in
@@ -41,31 +41,28 @@ then
     exit 1
 fi
 
-HOME_DIR=/var/www/$DOMAIN
+HOME_DIR=/srv/www/$DOMAIN
 
-# Nutzer hinzufügen
-useradd -d $HOME_DIR -G "www-data" -U -m -k ./skel -s /bin/bash $USER
+# create the group of the user, the user and its directory
 
-# Nutzer noch der Gruppe hinzufügen
-adduser www-data $USER
 
-# Konfiguration für apache schreiben
-cat www.example.com | sed "s/HOSTNAME/$DOMAIN/g" | sed "s/USER/$USER/g" | sed "s/GROUP/$USER/g" > /etc/apache2/sites-available/$DOMAIN
+useradd -s /bin/false -d $HOME_DIR -U -m -k ./skel $USER
 
-# PHP konfigurieren
-sed -i "s/HOSTNAME/$DOMAIN/g" $HOME_DIR/php-fcgi/php-fcgi-starter
+
+# configuration du vhost
+cat www.example.com | sed "s/HOSTNAME/$DOMAIN/g" | sed "s/USER/$USER/g" | sed "s/GROUP/$USER/g" > /etc/apache2/vhost.d/$DOMAIN.conf
+
+# configuration de PHP
+sed -i "s/HOSTNAME/$DOMAIN/g" /srv/www/php-fcgi/$DOMAIN/php-fcgi-starter
 sed -i "s%HOME_DIR%$HOME_DIR/tmp%g" $HOME_DIR/conf/php.ini
 
-# logrotate Konfiguration schreiben
+# logrotate
 cat logrotate_template | sed "s/HOSTNAME/$DOMAIN/g" >> /etc/logrotate.d/vhosts
 
-# Berechtigungen festlegen
-chmod 750 $HOME_DIR
-chown $USER:$USER $HOME_DIR/*
-chmod 750 $HOME_DIR/*
+# rights management
 chmod 550 $HOME_DIR/conf
 chown $USER:$USER $HOME_DIR/conf/php.ini
 chmod 440 $HOME_DIR/conf/php.ini
-chown $USER:$USER $HOME_DIR/php-fcgi/php-fcgi-starter
-chmod 750 $HOME_DIR/php-fcgi/php-fcgi-starter
+chown $USER:$USER /srv/www/php-fcgi/$DOMAIN/php-fcgi-starter
+chmod 755 /srv/www/php-fcgi/$DOMAIN/php-fcgi-starter
 
