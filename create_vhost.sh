@@ -57,7 +57,7 @@ sed -i "s/HOSTNAME/$DOMAIN/g" /srv/www/php-fcgi/$DOMAIN/php-fcgi-starter
 sed -i "s%HOME_DIR%$HOME_DIR/tmp%g" $HOME_DIR/conf/php.ini
 
 # logrotate
-cat logrotate_template | sed "s/HOSTNAME/$DOMAIN/g" >> /etc/logrotate.d/vhosts
+#cat logrotate_template | sed "s/HOSTNAME/$DOMAIN/g" >> /etc/logrotate.d/vhosts
 
 # rights management
 chmod 550 $HOME_DIR/conf
