@@ -1,0 +1,26 @@
+# only do this if module is available
+<IfModule mod_rewrite.c>
+# enable rewrite engine
+RewriteEngine On
+# set base to root
+RewriteBase /
+# non www to www rewrite
+RewriteCond %{HTTP_HOST} ^example\.com [NC]
+RewriteRule ^(.*)$ http://www.example.com/$1 [L,R=301]
+# Do not show any svn folders
+RewriteRule ^(.*/)?\.svn/ - [F,L]
+ErrorDocument 403 "Access Forbidden"
+# Do not show any git folders
+RewriteRule ^(.*/)?\.git/ - [F,L]
+ErrorDocument 403 "Access Forbidden"
+# Do not show any README files 
+RewriteRule ^README - [F,L]
+ErrorDocument 403 "Access Forbidden"
+# Base goes to application
+RewriteRule ^$ /index.php [L]
+# Skip real files and directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# Otherwise send it to WordPress
+RewriteRule .* /index.php [L]
+</IfModule>
