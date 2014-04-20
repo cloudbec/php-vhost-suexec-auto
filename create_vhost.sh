@@ -57,7 +57,7 @@ useradd -s /bin/false -d $HOME_DIR -g $USER -m -k ./skel $USER
 
 cat www.example.com | sed "s/HOSTNAME/$DOMAIN/g" | sed "s/USER/$USER/g" | sed "s/GROUP/$USER/g" > $DOMAIN.conf
 
-mv $DOMAIN.conf /etc/apache2/vhost.d/
+mv $DOMAIN.conf /etc/apache2/vhosts.d/
 
 # configuration de PHP
 sed -i "s/HOSTNAME/$DOMAIN/g" /srv/www/$DOMAIN/php-fcgi-scripts/php-fcgi-starter
