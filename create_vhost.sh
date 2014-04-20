@@ -46,7 +46,7 @@ HOME_DIR=/srv/www/$DOMAIN
 # create the group of the user, the user and its directory
 
 
-useradd -s /bin/false -d $HOME_DIR -U -m -k ./skel $USER
+useradd -s /bin/false -d $HOME_DIR  -m -k ./skel $USER
 
 
 # configuration du vhost
