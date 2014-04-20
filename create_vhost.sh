@@ -51,12 +51,13 @@ useradd -s /bin/false -d $HOME_DIR  -m -k ./skel $USER
 
 # configuration du vhost
 
-touch /etc/apache2/vhost.d/$DOMAIN.conf
 
-cat www.example.com | sed "s/HOSTNAME/$DOMAIN/g" | sed "s/USER/$USER/g" | sed "s/GROUP/$USER/g" > /etc/apache2/vhost.d/$DOMAIN.conf
+cat www.example.com | sed "s/HOSTNAME/$DOMAIN/g" | sed "s/USER/$USER/g" | sed "s/GROUP/$USER/g" > $DOMAIN.conf
+
+mv $DOMAIN.conf etc/apache2/vhost.d/
 
 # configuration de PHP
-sed -i "s/HOSTNAME/$DOMAIN/g" /srv/www/php-fcgi/$DOMAIN/php-fcgi-starter
+sed -i "s/HOSTNAME/$DOMAIN/g" /srv/www/$DOMAIN/php-fcgi-scripts/php-fcgi-starter
 sed -i "s%HOME_DIR%$HOME_DIR/tmp%g" $HOME_DIR/conf/php.ini
 
 # logrotate
@@ -66,6 +67,6 @@ sed -i "s%HOME_DIR%$HOME_DIR/tmp%g" $HOME_DIR/conf/php.ini
 chmod 550 $HOME_DIR/conf
 chown $USER:$USER $HOME_DIR/conf/php.ini
 chmod 440 $HOME_DIR/conf/php.ini
-chown $USER:$USER /srv/www/php-fcgi/$DOMAIN/php-fcgi-starter
-chmod 755 /srv/www/php-fcgi/$DOMAIN/php-fcgi-starter
+chown $USER:$USER /srv/www/$DOMAIN/php-fcgi-scripts/php-fcgi-starter
+chmod 755 /srv/www/$DOMAIN/php-fcgi-scripts/php-fcgi-starter
 
