@@ -50,6 +50,9 @@ useradd -s /bin/false -d $HOME_DIR  -m -k ./skel $USER
 
 
 # configuration du vhost
+
+touch /etc/apache2/vhost.d/$DOMAIN.conf
+
 cat www.example.com | sed "s/HOSTNAME/$DOMAIN/g" | sed "s/USER/$USER/g" | sed "s/GROUP/$USER/g" > /etc/apache2/vhost.d/$DOMAIN.conf
 
 # configuration de PHP
