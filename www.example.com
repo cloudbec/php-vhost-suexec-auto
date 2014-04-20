@@ -10,14 +10,15 @@
       Options +ExecCGI
       AllowOverride All
       AddHandler fcgid-script .php
-      FCGIWrapper /srv/www/php-fcgi-scripts/HOSTNAME/php-fcgi-starter .php
+      FCGIWrapper /srv/www/HOSTNAME/php-fcgi-scripts/php-fcgi-starter .php
       Order allow,deny
       Allow from all
     </Directory>
   </IfModule>
 
-  ErrorLog /var/log/apache2/HOSTNAME/error.log
-  CustomLog /var/log/apache2/HOSTNAME/access.log combined
+ErrorLog /srv/www/HOSTNAME/log/error.log
+  CustomLog /srv/www/HOSTNAME/log/access.log combined
+
   ServerSignature Off
 
 </VirtualHost>
