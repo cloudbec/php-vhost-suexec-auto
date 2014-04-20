@@ -1,7 +1,7 @@
 <VirtualHost *:80>
   ServerName HOSTNAME
   ServerAlias HOSTNAME
-  ServerAdmin webmaster@HOSTNAME
+  ServerAdmin USER@HOSTNAME
   DocumentRoot /srv/www/HOSTNAME/public_html/
 
   <IfModule mod_fcgid.c>
