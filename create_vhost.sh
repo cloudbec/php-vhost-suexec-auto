@@ -11,11 +11,11 @@ usage()
     OPTIONS:
     -h      Show this message
     -u      the user name
-    -d      the domain name 
+    -d      the domain name
 EOF
 }
 # all the information 
-while getopts "hp:u:d:" OPTION
+while getopts "hp:u:d:p:" OPTION
 do
     case $OPTION in
         h)
@@ -41,35 +41,46 @@ then
     exit 1
 fi
 
-HOME_DIR=/srv/www/$DOMAIN
 
-# create the group of the user, the user and its directory
+WEB_DIR=/srv/www/$DOMAIN
+
+# webdir is home
+
+# create the group of the user, the user, its password and its home (for sftp) 
 
 groupadd $USER
 
+useradd -s /bin/false -d $WEB_DIR -g $USER  -m $USER
 
-useradd -s /bin/false -d $HOME_DIR -g $USER -m -k ./skel $USER
+# create the domain directory with the good permission and content
 
+mkdir -p $WEB_DIR
 
+cp -r skel/* $WEB_DIR/
 
-# configuration du vhost
+# configuration of userss vhost
 
 
 cat www.example.com | sed "s/HOSTNAME/$DOMAIN/g" | sed "s/USER/$USER/g" | sed "s/GROUP/$USER/g" > $DOMAIN.conf
 
 mv $DOMAIN.conf /etc/apache2/vhosts.d/
 
-# configuration de PHP
-sed -i "s/HOSTNAME/$DOMAIN/g" /srv/www/$DOMAIN/php-fcgi-scripts/php-fcgi-starter
-sed -i "s%HOME_DIR%$HOME_DIR/tmp%g" $HOME_DIR/conf/php.ini
+# configuration of each users' PHP
+sed -i "s/HOSTNAME/$DOMAIN/g" $WEB_DIR/php-fcgi-scripts/php-fcgi-starter
+sed -i "s%HOME_DIR%$WEB_DIR/tmp%g" $WEB_DIR/conf/php.ini
 
 # logrotate
 #cat logrotate_template | sed "s/HOSTNAME/$DOMAIN/g" >> /etc/logrotate.d/vhosts
 
 # rights management
-chmod 550 $HOME_DIR/conf
-chown $USER:$USER $HOME_DIR/conf/php.ini
-chmod 440 $HOME_DIR/conf/php.ini
-chown $USER:$USER /srv/www/$DOMAIN/php-fcgi-scripts/php-fcgi-starter
-chmod 755 /srv/www/$DOMAIN/php-fcgi-scripts/php-fcgi-starter
+
+chown -R $USER:$USER $WEB_DIR
+chmod 550 $WEB_DIR/conf
+chown $USER:$USER $WEB_DIR/conf/php.ini
+chmod 440 $WEB_DIR/conf/php.ini
+chown $USER:$USER $WEB_DIR/php-fcgi-scripts/php-fcgi-starter
+chmod 755 $WEB_DIR/php-fcgi-scripts/php-fcgi-starter
+
+
+
 
